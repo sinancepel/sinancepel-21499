@@ -1,0 +1,79 @@
+\documentclass[12pt]{amsart}
+
+\usepackage{amssymb}
+
+\newcounter{Factctr}
+\newcommand{\defn}{{\bf Definition }}
+
+\newcommand{\thm}{{\bf Theorem }}
+
+\newcommand{\prf}{{\bf Proof }}
+
+\newcommand{\claim}{{\bf Claim }}
+
+\newcommand{\fact}{\stepcounter{Factctr} {\bf Fact \arabic{Factctr}} }
+
+\title{Non-repeating Nim}
+\author{Sinan Cepel (scepel@andrew.cmu.edu)}
+
+
+\begin{document}
+
+\maketitle
+
+This paper deals with a variation of Nim where if any player took $k$ stones from a pile, $k$ stones may not be taken by either player until a different move is made on that pile. The rest of the rules are identical to that of Nim.
+
+We analyze the nimbers for a single pile of stones in this variation of Nim. By Sprague-Grundy, the analysis of one pile is sufficient to understand the complete game.
+
+\defn For any $n$ and $k \in \mathbb{N}\cup \{0\}$, e define $(n,k)$ to be the Nim pile with $n$ stones remaining, where the last move removed $k$ stones from the pile. Let $U = \mathbb{N} \times \mathbb{N}$ denote the universe of Nim piles.
+
+\defn Define $N : U \to \mathbb{N} : (n,k) \mapsto \text{nimber}(n, k)$ be the function that maps a Nim pile to it's nimber.
+
+\thm If $n$ odd, $N(n,n) = 0$.
+
+\proof Since the first player cannot remove all stones, he must make a move $m < n$, reducing the pile to $(n - m, m)$. Since $n$ odd, $n-m \neq m$, and the second player can make the move $n - m$, reducing the pile to 0. Hence the game is a second-player min, implying that $N(n,n) = 0$.
+
+%\thm If $n$ even, $N(n,k) > 0$ for all $k$.
+
+%\prf If $n \neq k$, the current player can take $n$ stones from the pile, reducing player 2 to the 0 game. So, we investigate the case where $k = 2^ab$, $a$ a natural number, $b$ odd. Now, 
+
+\fact If $k \geq 12$, $N(22, k) = 12$.
+
+\fact If $n < 22$, for all $k$, $N(n, k) \neq 12$.
+
+\fact If $n \geq 39$, and $k \neq n$, $N(n, k) > 11$.
+
+\fact The only $n < 39$ that satisfy $N(n, k) = 12$ and $k \neq n - 22$ are $n = 24, k = 1$ and $n=32, k=5$. 
+
+\claim If $n \geq 39$, $N(n, k) = 12$ only if $k = n - 22$.
+
+\proof  
+
+Suppose $k \neq n - 22$. Then, by Fact 3, $N(n,k) \geq 12$. Since $n \geq 39$, $ n - 22 \geq 17$, so we can use Fact 1, implying that $N(22, n - 22) = 12$. Since $k \neq n - 22$, we can make this move, implying that $N(n, k) > 12$, proving the claim. \qed
+
+\claim If $n \geq 39$, $n$ odd, and $k = n - 22$, $N(n, k) = 12$.
+
+\proof By Fact 3, $N(n, k) \geq 12$, so we need to show we cannot achieve a pile of nimber 12. 
+
+Since $n \geq 39$, by Fact 4, we cannot reach the states (32, 5) or (24, 1), and $k = n - 22$, so we cannot reach $(22, n - 22)$. Hence, to reach a pile of nimber 12, we have to make a move $m \neq k$ such that $N(n - m, m) = 12$, but by the previous claim, $m = n - m - 22$. 
+
+But look, $n - m + n - m - 22 = 2(n - m - 11)$ is even, while $n$ is odd, so such a move does not exist. Hence, $N(n, k) = 12$. \qed
+
+\claim Let $a$ be an arbitrary odd number. All Nim piles of the form $(2^ba, 2^ba)$ are N-positions if and only if $b$ is odd. Hence, if $b$ is even, $(2^ba, 2^ba)$ is a P-position.
+
+\proof By induction on $b$.
+
+The base case, where $b = 0$, holds by our first theorem. 
+
+For the inductive step, suppose the proposition holds for some $b$, and consider $b + 1$.
+
+Our initial position is $(2^{b+1}a, 2^{b+1}a)$.
+
+If $b + 1$ odd, then $b$ was even, so $(2^ba, 2^ba)$ is a P-position, and the removing $2^ba$ stones from the pile reduces the state to $(2^{b+1}a - 2^ba, 2^ba) = (2^ba, 2^ba)$. We have a move that takes the game to a P-position, so $(2^{b+1}a, 2^{b+1}a)$ is an N-position in this case.
+
+Otherwise, $b + 1$ even. The current player cannot take all stones. If the current player makes any move $m \neq 2^ba$, then the other player can make the move $2^{b+1}a - m \neq m$, reducing the pile to $0$ stones. If the current player makes the move $2^ba$, the game is reduced to a state $(2^ba, 2^ba)$, but since $b$ odd, this is an N-position for the next player.
+
+Hence, no matter how the current player moves, this pile is a P-position, and the claim holds. \qed
+
+
+\end{document}
